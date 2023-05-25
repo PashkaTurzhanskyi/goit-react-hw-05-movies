@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
 // import axios from 'axios';
 
-const BASE_URL = 'https://api.themoviedb.org/3/movie/550';
-const API_KEY = '582707f454b5a6208f3d9a05b7aa2e3d';
+// const BASE_URL = 'https://api.themoviedb.org/3/movie/550';
+const API_KEY = '51103b4e400ad80867dbac8add08ee9b';
 
 const Home = () => {
   useEffect(() => {
     // HTTP ---> /trending/get-trending
-    fetch(`${BASE_URL}?api_key=${API_KEY}/trending/get-trending`)
+    fetch(
+      `https://developers.themoviedb.org/3/trending/get-trending?api_key=${API_KEY}`
+    )
       .then(res => res.json())
       .then(res => console.log(res));
     // axios
