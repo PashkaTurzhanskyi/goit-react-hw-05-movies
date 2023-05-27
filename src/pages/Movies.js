@@ -7,6 +7,8 @@ const Movies = () => {
     // HTTP ---> /search/search-movies
   }, []);
 
+  console.log(searchParams);
+
   return (
     <div>
       <input
