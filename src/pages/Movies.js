@@ -1,28 +1,51 @@
-import { useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { BASE_URL, API_KEY } from 'components/service';
 
 const Movies = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  useEffect(() => {
-    // HTTP ---> /search/search-movies
-  }, []);
+  const query = searchParams.get('query') ?? '';
+  const [searchQuery, setSearchQuery] = useState('');
+  const [listFoundMovies, setListFoundMovies] = useState([]);
+  const location = useLocation();
 
-  console.log(searchParams);
+  useEffect(() => {
+    query &&
+      axios
+        .get(`${BASE_URL}search/movie?query=${query}&api_key=${API_KEY}`)
+        .then(({ data }) => setListFoundMovies(data.results))
+        .catch(error => console.log(error));
+  }, [query]);
+
+  const handleInputChange = e => setSearchQuery(e.target.value.toLowerCase());
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    searchQuery && setSearchParams({ query: searchQuery });
+  };
 
   return (
     <div>
-      <input
-        type="text"
-        onChange={e => setSearchParams({ query: e.target.value })}
-      />
-      <button onClick={() => {}}>Search</button>
-      {['movie-1', 'movie-2', 'movie-3', 'movie-4', 'movie-5'].map(movie => {
-        return (
-          <Link key={movie} to={`${movie}`}>
-            {movie}
-          </Link>
-        );
-      })}
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={searchQuery}
+          autoComplete="off"
+          autoFocus
+          onChange={handleInputChange}
+        />
+        <button type="submit">Search</button>
+      </form>
+      <ul>
+        {listFoundMovies.map(movie => (
+          <li key={movie.id}>
+            <Link to={`${movie.id}`} state={{ from: location }}>
+              {movie.title}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

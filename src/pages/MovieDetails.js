@@ -1,25 +1,24 @@
-import { Link, Outlet, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-
-const BASE_URL = 'https://api.themoviedb.org/3/';
-const API_KEY = '51103b4e400ad80867dbac8add08ee9b';
+import { BASE_URL, API_KEY } from 'components/service';
 
 const MovieDetails = () => {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState({});
+  const location = useLocation();
+  const backLinkLocationRef = useRef(location.state?.from ?? '/');
 
   useEffect(() => {
     axios
       .get(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`)
-      .then(({ data }) => {
-        setMovieDetails(data);
-      })
-      .catch();
+      .then(({ data }) => setMovieDetails(data))
+      .catch(error => console.log(error));
   }, [movieId]);
 
   return (
     <>
+      <Link to={backLinkLocationRef.current}>Go back</Link>
       <div>
         <img
           src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
@@ -49,7 +48,9 @@ const MovieDetails = () => {
           <Link to="reviews">Reviews</Link>
         </li>
       </ul>
-      <Outlet />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Outlet />
+      </Suspense>
     </>
   );
 };

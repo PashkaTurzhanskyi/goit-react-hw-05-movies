@@ -1,20 +1,17 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
-const BASE_URL = 'https://api.themoviedb.org/3/';
-const API_KEY = '51103b4e400ad80867dbac8add08ee9b';
+import { BASE_URL, API_KEY } from 'components/service';
 
 const Cast = () => {
   const { movieId } = useParams();
   const [actorList, setActorList] = useState([]);
+
   useEffect(() => {
     axios
       .get(`${BASE_URL}movie/${movieId}/credits?api_key=${API_KEY}`)
-      .then(({ data }) => {
-        setActorList(data.cast);
-      })
-      .catch();
+      .then(({ data }) => setActorList(data.cast))
+      .catch(error => console.log(error));
   }, [movieId]);
 
   return (

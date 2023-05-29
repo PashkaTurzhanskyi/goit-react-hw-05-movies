@@ -1,21 +1,19 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
-const BASE_URL = 'https://api.themoviedb.org/3/';
-const API_KEY = '51103b4e400ad80867dbac8add08ee9b';
+import { BASE_URL, API_KEY } from 'components/service';
 
 const Reviews = () => {
   const { movieId } = useParams();
   const [reviewsList, setReviewsList] = useState([]);
+
   useEffect(() => {
     axios
       .get(`${BASE_URL}movie/${movieId}/reviews?api_key=${API_KEY}`)
-      .then(({ data }) => {
-        setReviewsList(data.results);
-      })
-      .catch();
+      .then(({ data }) => setReviewsList(data.results))
+      .catch(error => console.log(error));
   }, [movieId]);
+
   return (
     <>
       <ul>
