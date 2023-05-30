@@ -20,11 +20,11 @@ const MovieDetails = () => {
     <>
       <Link to={backLinkLocationRef.current}>Go back</Link>
       <div>
-        <img
+        {movieDetails && <img
           src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
           alt={movieDetails.title}
           width="200px"
-        />
+        />}
         <h1>
           {movieDetails.title}
           {' ('}

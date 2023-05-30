@@ -17,13 +17,13 @@ const Cast = () => {
   return (
     <>
       <ul>
-        {actorList.map(actor => (
+        { actorList.map(actor => (
           <li key={actor.id}>
-            <img
+            {actor.profile_path && <img
               src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
               alt={actor.name}
               width="100px"
-            />
+            />}
             <p>{actor.name}</p>
             <p>Character: {actor.character}</p>
           </li>
