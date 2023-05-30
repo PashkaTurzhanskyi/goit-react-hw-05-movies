@@ -2,6 +2,7 @@ import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import { Suspense, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { BASE_URL, API_KEY } from 'components/service';
+import { Description, Button } from './MovieDetails.styled';
 
 const MovieDetails = () => {
   const { movieId } = useParams();
@@ -18,13 +19,14 @@ const MovieDetails = () => {
 
   return (
     <>
-      <Link to={backLinkLocationRef.current}>Go back</Link>
-      <div>
-        {movieDetails.poster_path && <img
+      <Button to={backLinkLocationRef.current}>Go back</Button>
+      <Description>
+        <div>{movieDetails.poster_path && <img
           src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
           alt={movieDetails.title}
           width="200px"
-        />}
+        />}</div>
+        <div>
         <h1>
           {movieDetails.title}
           {' ('}
@@ -38,8 +40,9 @@ const MovieDetails = () => {
         <p>
           {movieDetails.genres && movieDetails.genres.map(i => i.name + ' ')}
         </p>
-        <p>Additional information</p>
-      </div>
+        </div>
+              </Description>
+      <p>Additional information</p>
       <ul>
         <li>
           <Link to="cast">Cast</Link>

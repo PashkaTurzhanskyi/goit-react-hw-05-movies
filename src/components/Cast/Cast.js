@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { BASE_URL, API_KEY } from 'components/service';
+import { ListActors } from './Cast.styled';
 
 const Cast = () => {
   const { movieId } = useParams();
@@ -16,7 +17,7 @@ const Cast = () => {
 
   return (
     <>
-      <ul>
+      <ListActors>
         { actorList.map(actor => (
           <li key={actor.id}>
             {actor.profile_path && <img
@@ -28,7 +29,7 @@ const Cast = () => {
             <p>Character: {actor.character}</p>
           </li>
         ))}
-      </ul>
+      </ListActors>
     </>
   );
 };
