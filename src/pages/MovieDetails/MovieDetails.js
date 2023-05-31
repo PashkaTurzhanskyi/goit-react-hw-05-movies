@@ -6,7 +6,8 @@ import { Description, Button } from './MovieDetails.styled';
 
 const MovieDetails = () => {
   const { movieId } = useParams();
-  const [movieDetails, setMovieDetails] = useState({});
+  const [movieDetails, setMovieDetails] = useState(null);
+  const [error, setError] = useState(null);
   const location = useLocation();
   const backLinkLocationRef = useRef(location.state?.from ?? '/');
 
@@ -14,13 +15,14 @@ const MovieDetails = () => {
     axios
       .get(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`)
       .then(({ data }) => setMovieDetails(data))
-      .catch(error => console.log(error));
+      .catch(error => setError(error));
   }, [movieId]);
 
   return (
     <>
       <Button to={backLinkLocationRef.current}>Go back</Button>
-      <Description>
+      {error && <p>{error.message}</p>}
+      {movieDetails && <Description>
         <div>{movieDetails.poster_path && <img
           src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
           alt={movieDetails.title}
@@ -41,7 +43,7 @@ const MovieDetails = () => {
           {movieDetails.genres && movieDetails.genres.map(i => i.name + ' ')}
         </p>
         </div>
-              </Description>
+              </Description>}
       <p>Additional information</p>
       <ul>
         <li>
