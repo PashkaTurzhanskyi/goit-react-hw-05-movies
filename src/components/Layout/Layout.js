@@ -24,6 +24,7 @@ const Layout = () => {
             <StyledLink to="/movies">Movies</StyledLink>
           </li>
         </NavList>
+        <hr />
       </header>
       <main>
         <Suspense fallback={<div>Loading...</div>}>
